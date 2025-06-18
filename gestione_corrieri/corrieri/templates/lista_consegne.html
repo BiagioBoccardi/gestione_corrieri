@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista Consegne</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body class="bg-base-200 min-h-screen">
+    <div class="max-w-7xl mx-auto py-8 px-4">
+      <div class="bg-base-100 rounded-xl shadow-xl p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold text-primary">Consegne</h2>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="table table-zebra">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Ordine</th>
+                <th>Corriere</th>
+                <th>Veicolo</th>
+                <th>Azioni</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for consegna in consegne %}
+              <tr>
+                <td>{{ consegna.id_consegna }}</td>
+                <td>
+                  #{{ consegna.id_ordine.id_ordine }}<br>
+                  {{ consegna.id_ordine.indirizzo }}
+                </td>
+                <td>
+                  {{ consegna.id_corriere.nome }}
+                </td>
+                <td>
+                  {% if consegna.id_veicolo %}
+                    {{ consegna.id_veicolo.Targa_mezzo }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td>
+                  <!-- Puoi aggiungere pulsanti per dettagli/elimina se vuoi -->
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5" class="text-center text-base-content/40">Nessuna consegna presente</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

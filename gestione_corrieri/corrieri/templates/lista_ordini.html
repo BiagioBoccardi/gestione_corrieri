@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista Ordini</title>
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- DaisyUI CDN -->
+    <script>
+      tailwind.config = {
+        plugins: [daisyui],
+      };
+    </script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body class="bg-base-200 min-h-screen">
+    <div class="max-w-7xl mx-auto py-8 px-4">
+      <div class="grid grid-cols-2 gap-8">
+        <!-- Ordini Recenti -->
+        <div class="bg-base-100 rounded-xl shadow-xl p-6">
+          <h2 class="text-xl font-bold mb-4 text-primary">Ordini Recenti</h2>
+          <ul>
+            {% for ordine in ordini|slice:":5" %}
+            <li
+              class="py-2 border-b last:border-b-0 flex justify-between items-center"
+            >
+              <span class="font-semibold text-base-content"
+                >#{{ ordine.id_ordine }}</span
+              >
+              <span class="text-base-content/60"
+                >{{ ordine.data_e_ora_ordine }}</span
+              >
+            </li>
+            {% empty %}
+            <li class="text-base-content/40">Nessun ordine recente</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Tabella Ordini con DaisyUI -->
+        <div class="bg-base-100 rounded-xl shadow-xl p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-primary">Ordini</h2>
+            <div class="flex gap-2">
+              <a href="{% url 'crea_ordine' %}" class="btn btn-primary btn-sm">
+                + Nuovo
+              </a>
+              
+            </div>
+          </div>
+          <div class="mb-2">
+            <input
+              type="text"
+              placeholder="Cerca..."
+              class="input input-bordered w-full input-sm"
+            />
+          </div>
+          <div class="overflow-x-auto">
+            <table class="table table-zebra">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Indirizzo</th>
+                  <th>Data</th>
+                  <th>Priorità</th>
+                  <th>Stato</th>
+                  <th>Azioni</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for ordine in ordini %}
+                <tr>
+                  <td>{{ ordine.id_ordine }}</td>
+                  <td>{{ ordine.indirizzo }}</td>
+                  <td>{{ ordine.data_e_ora_ordine|date:"d/m/Y" }}</td>
+                  <td>
+                    {% if ordine.priorita == 10 %}
+                    <span class="badge badge-error badge-sm">Alta</span>
+                    {% elif ordine.priorita == 5 %}
+                    <span class="badge badge-warning badge-sm">Media</span>
+                    {% else %}
+                    <span class="badge badge-success badge-sm">Bassa</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if ordine.stato == "ASSEGNATO" %}
+                    <span class="badge badge-info badge-sm">Assegnato</span>
+                    {% elif ordine.stato == "DA_ASSEGNARE" %}
+                    <span class="badge badge-warning badge-sm"
+                      >Da assegnare</span
+                    >
+                    {% elif ordine.stato == "COMPLETATO" %}
+                    <span class="badge badge-success badge-sm">Completato</span>
+                    {% else %}
+                    <span class="badge badge-neutral badge-sm"
+                      >{{ ordine.stato }}</span
+                    >
+                    {% endif %}
+                  </td>
+                  <td class="flex gap-2">
+                    <a
+                      href="{% url 'dettaglio_ordine' ordine.id_ordine %}"
+                      class="btn btn-xs btn-outline btn-primary"
+                      title="Dettaglio"
+                    >
+                      👁️
+                    </a>
+                     <a
+                      href="{% url 'modifica_ordine' ordine.id_ordine %}"
+                      class="btn btn-xs btn-outline btn-info"
+                      title="Modifica"
+                    >
+                      ✏️
+                    </a>
+                    <form
+                      method="post"
+                      action="{% url 'elimina_ordine' ordine.id_ordine %}"
+                      style="display: inline"
+                    >
+                      {% csrf_token %}
+                      <button
+                        type="submit"
+                        class="btn btn-xs btn-outline btn-error"
+                        title="Elimina"
+                        onclick="return confirm('Sei sicuro di voler eliminare questo ordine?');"
+                      >
+                        🗑️
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center text-base-content/40 py-4">
+                    Nessun ordine trovato
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Altri contenuti (seconda riga, prima colonna) -->
+        <div
+          class="bg-base-100 rounded-xl shadow-xl p-6 flex flex-col items-center justify-center"
+        >
+          <h2 class="text-xl font-bold mb-4 text-primary">
+            Grafici Ordini Recenti
+          </h2>
+          <p class="text-base-content/60">
+            Qui puoi aggiungere altri widget o statistiche.
+          </p>
+        </div>
+
+        <!-- Altri contenuti (seconda riga, seconda colonna) -->
+        <div
+          class="bg-base-100 rounded-xl shadow-xl p-6 flex flex-col items-center justify-center"
+        >
+          <h2 class="text-xl font-bold mb-4 text-primary"></h2>
+          <p class="text-base-content/60">
+            Qui puoi aggiungere altri widget o grafici.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

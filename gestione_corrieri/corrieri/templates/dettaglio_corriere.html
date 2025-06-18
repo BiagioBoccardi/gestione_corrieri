@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dettaglio Corriere</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body class="bg-base-200 min-h-screen">
+    <div class="max-w-xl mx-auto mt-10 bg-base-100 p-8 rounded-xl shadow-xl">
+      <h2 class="text-xl font-bold mb-4 text-primary">Dettaglio Corriere #{{ corriere.id_corriere }}</h2>
+      <ul class="mb-6 space-y-2">
+        <li><strong>Nome:</strong> {{ corriere.nome }}</li>
+        <li><strong>Capacità massima:</strong> {{ corriere.capacità_massima }}</li>
+        <li><strong>Posizione attuale:</strong> {{ corriere.posizione_attuale }}</li>
+      </ul>
+      <a href="{% url 'lista_corrieri' %}" class="btn btn-primary">Torna alla lista corrieri</a>
+    </div>
+  </body>
+</html>

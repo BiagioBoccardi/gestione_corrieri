@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dettagli Consegna</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body class="bg-base-200 min-h-screen">
+    <div class="max-w-xl mx-auto mt-10 bg-base-100 p-8 rounded-xl shadow-xl">
+      <h2 class="text-xl font-bold mb-4 text-primary">Dettagli Consegna #{{ consegna.id_consegna }}</h2>
+      <div class="mb-4">
+        <h3 class="font-semibold text-primary">Ordine</h3>
+        <ul>
+          <li><strong>ID Ordine:</strong> {{ consegna.id_ordine.id_ordine }}</li>
+          <li><strong>Indirizzo:</strong> {{ consegna.id_ordine.indirizzo }}</li>
+          <li><strong>Data Ordine:</strong> {{ consegna.id_ordine.data_e_ora_ordine }}</li>
+          <li><strong>Stato:</strong> {{ consegna.id_ordine.stato }}</li>
+          <li><strong>Priorità:</strong> {{ consegna.id_ordine.get_priorita_display }}</li>
+          <li><strong>Peso:</strong> {{ consegna.id_ordine.peso }}</li>
+          <li><strong>Volume:</strong> {{ consegna.id_ordine.volume }}</li>
+        </ul>
+      </div>
+      <div class="mb-4">
+        <h3 class="font-semibold text-primary">Corriere</h3>
+        <ul>
+          <li><strong>Nome:</strong> {{ consegna.id_corriere.nome }}</li>
+          <li><strong>Capacità massima:</strong> {{ consegna.id_corriere.capacità_massima }}</li>
+          <li><strong>Posizione attuale:</strong> {{ consegna.id_corriere.posizione_attuale }}</li>
+        </ul>
+      </div>
+      <div class="mb-4">
+        <h3 class="font-semibold text-primary">Veicolo</h3>
+        <ul>
+          <li><strong>Targa:</strong> {{ consegna.id_veicolo.Targa_mezzo }}</li>
+          <li><strong>Capacità massima:</strong> {{ consegna.id_veicolo.capacità_massima }}</li>
+        </ul>
+      </div>
+      <a href="{% url 'lista_consegne' %}" class="btn btn-primary">Torna alla lista consegne</a>
+    </div>
+  </body>
+</html>

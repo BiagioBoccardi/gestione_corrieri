@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lista Mezzi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body class="bg-base-200 min-h-screen">
+    <div class="max-w-7xl mx-auto py-8 px-4">
+      <h1 class="text-3xl font-bold mb-6 text-primary">Lista Mezzi</h1>
+      <div class="mb-4 flex justify-end">
+        <a href="{% url 'crea_mezzo' %}" class="btn btn-success">
+          ➕ Aggiungi Mezzo
+        </a>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="table table-zebra w-full">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Codice Corriere</th>
+              <th>Capacità Massima</th>
+              <th>Targa Mezzo</th>
+              <th>Azioni</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for mezzo in mezzi %}
+            <tr>
+              <td>{{ mezzo.id_veicolo }}</td>
+              <td>{{ mezzo.Codice_Corriere }}</td>
+              <td>{{ mezzo.capacità_massima }}</td>
+              <td>{{ mezzo.Targa_mezzo }}</td>
+              <td>
+                <a
+                  href="{% url 'dettaglio_mezzo' mezzo.id_veicolo %}"
+                  class="btn btn-xs btn-outline btn-primary"
+                  title="Dettaglio"
+                >
+                  👁️
+                </a>
+                <a
+                  href="{% url 'modifica_mezzo' mezzo.id_veicolo %}"
+                  class="btn btn-xs btn-outline btn-info"
+                  title="Modifica"
+                >
+                  ✏️
+                </a>
+                <form
+                  method="post"
+                  action="{% url 'elimina_mezzo' mezzo.id_veicolo %}"
+                  style="display: inline"
+                >
+                  {% csrf_token %}
+                  <button
+                    type="submit"
+                    class="btn btn-xs btn-outline btn-error"
+                    title="Elimina"
+                    onclick="return confirm('Sei sicuro di voler eliminare questo mezzo?');"
+                  >
+                    🗑️
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5" class="text-center">Nessun mezzo trovato.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

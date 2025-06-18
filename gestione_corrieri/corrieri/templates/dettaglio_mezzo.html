@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dettaglio Mezzo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body class="bg-base-200 min-h-screen">
+    <div class="max-w-xl mx-auto py-8 px-4">
+      <h1 class="text-2xl font-bold mb-6 text-primary">Dettaglio Mezzo</h1>
+      <div class="bg-base-100 rounded-xl shadow-xl p-6">
+        <p><strong>ID Veicolo:</strong> {{ mezzo.id_veicolo }}</p>
+        <p><strong>Codice Corriere:</strong> {{ mezzo.Codice_Corriere }}</p>
+        <p><strong>Capacità Massima:</strong> {{ mezzo.capacità_massima }}</p>
+        <p><strong>Targa Mezzo:</strong> {{ mezzo.Targa_mezzo }}</p>
+      </div>
+      <div class="mt-6 flex justify-end">
+        <a
+          href="{% url 'modifica_mezzo' mezzo.id_veicolo %}"
+          class="btn btn-info mr-2"
+          >Modifica</a
+        >
+        <a href="{% url 'lista_mezzi' %}" class="btn btn-ghost"
+          >Torna alla lista</a
+        >
+      </div>
+    </div>
+  </body>
+</html>

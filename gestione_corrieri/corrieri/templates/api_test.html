@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Test API Gestione Corrieri</title>
+    <!-- Tailwind CSS + DaisyUI CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { plugins: [daisyui] };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.js"></script>
+  </head>
+  <body class="bg-base-200 min-h-screen">
+    <div class="max-w-xl mx-auto py-10 px-4">
+      <h1 class="text-3xl font-bold mb-8 text-primary">
+        Interfaccia Web API – Gestione Corrieri
+      </h1>
+
+      <div class="mb-8 card bg-base-100 shadow-xl p-6">
+        <h2 class="text-xl font-semibold mb-4">1. Registrazione Ordine</h2>
+        <form id="form-registra" class="space-y-2">
+          <input
+            name="indirizzo"
+            class="input input-bordered w-full"
+            placeholder="Indirizzo"
+            required
+          />
+            <input
+                name="data_e_ora_ordine"
+                type="datelocal-local"
+                class="input input-bordered w-full"
+                placeholder="Data Ordine"
+                required
+                />
+          <input
+            name="priorita"
+            class="input input-bordered w-full"
+            placeholder="Priorità"
+            required
+          />
+          <input
+            name="peso"
+            type="number"
+            class="input input-bordered w-full"
+            placeholder="Peso"
+            required
+          />
+          <button type="submit" class="btn btn-primary w-full mt-2">
+            Invia
+          </button>
+        </form>
+        <div id="result-registra" class="alert alert-info mt-4 hidden"></div>
+      </div>
+
+      <div class="mb-8 card bg-base-100 shadow-xl p-6">
+        <h2 class="text-xl font-semibold mb-4">2. Stato Ordine</h2>
+        <form id="form-stato" class="space-y-2">
+          <input
+            name="codice"
+            class="input input-bordered w-full"
+            placeholder="Codice Assegnazione"
+            required
+          />
+          <button type="submit" class="btn btn-secondary w-full mt-2">
+            Cerca
+          </button>
+        </form>
+        <div id="result-stato" class="alert alert-info mt-4 hidden"></div>
+      </div>
+
+      <div class="mb-8 card bg-base-100 shadow-xl p-6">
+        <h2 class="text-xl font-semibold mb-4">3. Consegne Corriere</h2>
+        <form id="form-consegne" class="space-y-2">
+          <input
+            name="codice"
+            class="input input-bordered w-full"
+            placeholder="Codice Corriere"
+            required
+          />
+          <button type="submit" class="btn btn-accent w-full mt-2">
+            Cerca
+          </button>
+        </form>
+        <div id="result-consegne" class="alert alert-info mt-4 hidden"></div>
+      </div>
+    </div>
+
+    <script>
+      // Cambia l'URL base se necessario
+      const BASE = "";
+
+      function showResult(id, text) {
+        const el = document.getElementById(id);
+        el.textContent = text;
+        el.classList.remove("hidden");
+      }
+
+      document.getElementById("form-registra").onsubmit = async function (e) {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(this));
+        const res = await fetch(BASE + "/api/ordini/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        showResult("result-registra", await res.text());
+      };
+
+      document.getElementById("form-stato").onsubmit = async function (e) {
+        e.preventDefault();
+        const codice = this.codice.value;
+        const res = await fetch(
+          BASE + "/api/ordini/" + encodeURIComponent(codice) + "/"
+        );
+        showResult("result-stato", await res.text());
+      };
+
+      document.getElementById("form-consegne").onsubmit = async function (e) {
+        e.preventDefault();
+        const codice = this.codice.value;
+        const res = await fetch(
+          BASE + "/api/corrieri/" + encodeURIComponent(codice) + "/consegne/"
+        );
+        showResult("result-consegne", await res.text());
+      };
+    </script>
+  </body>
+</html>

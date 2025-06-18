@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista Corrieri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body class="bg-base-200 min-h-screen">
+    <div class="max-w-7xl mx-auto py-8 px-4">
+      <div class="bg-base-100 rounded-xl shadow-xl p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold text-primary">Corrieri</h2>
+          <a href="{% url 'crea_corriere' %}" class="btn btn-primary btn-sm">
+            + Nuovo Corriere
+          </a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="table table-zebra">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Capacità Massima</th>
+                <th>Posizione Attuale</th>
+                <th>Azioni</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for corriere in corrieri %}
+              <tr>
+                <td>{{ corriere.id_corriere }}</td>
+                <td>{{ corriere.nome }}</td>
+                <td>{{ corriere.capacità_massima }}</td>
+                <td>{{ corriere.posizione_attuale }}</td>
+                <td class="flex gap-2">
+                  <a
+                    href="{% url 'dettaglio_corriere' corriere.id_corriere %}"
+                    class="btn btn-xs btn-outline btn-primary"
+                    title="Dettaglio"
+                  >
+                    👁️
+                  </a>
+                  <a
+                    href="{% url 'modifica_corriere' corriere.id_corriere %}"
+                    class="btn btn-xs btn-outline btn-info"
+                    title="Modifica"
+                  >
+                    ✏️
+                  </a>
+                  <form
+                    method="post"
+                    action="{% url 'elimina_corriere' corriere.id_corriere %}"
+                    style="display: inline"
+                  >
+                    {% csrf_token %}
+                    <button
+                      type="submit"
+                      class="btn btn-xs btn-outline btn-error"
+                      title="Elimina"
+                      onclick="return confirm('Sei sicuro di voler eliminare questo corriere?');"
+                    >
+                      🗑️
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5" class="text-center text-base-content/40">Nessun corriere presente</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

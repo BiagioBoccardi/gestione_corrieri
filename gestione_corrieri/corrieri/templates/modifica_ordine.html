@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Modifica Ordine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body class="bg-base-200 min-h-screen">
+    <div class="max-w-lg mx-auto mt-10 bg-base-100 p-8 rounded-xl shadow-xl">
+      <h2 class="text-xl font-bold mb-4 text-primary">
+        Modifica Ordine #{{ ordine.id_ordine }}
+      </h2>
+      <form method="post">
+        {% csrf_token %} {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-4">
+          Salva Modifiche
+        </button>
+        <a href="{% url 'lista_ordini' %}" class="btn btn-secondary mt-4"
+          >Annulla</a
+        >
+      </form>
+    </div>
+  </body>
+</html>
